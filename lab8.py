@@ -4,6 +4,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import time
 
 shift = 'M' * 4 + 'W' * 6
 
@@ -33,6 +34,8 @@ def shift_o_matic(iterable, r=None):
         else:
             return
 
+
+print('Пожалуйста, подождите 5-10 секунд.')
 
 schedule = list(set(shift_o_matic(shift)))
 
@@ -82,6 +85,7 @@ def inserter(controller):
         listbox.pack(side='left', fill='both', expand=1)
         scrollbar = tk.Scrollbar(newWindow, orient="vertical", command=listbox.yview)
         scrollbar.pack(side='right', fill='y')
+
     elif controller == '2' and checker() is True:
         shift_maker_window.destroy()
         newWindow = tk.Tk()
@@ -93,6 +97,7 @@ def inserter(controller):
         listbox.pack(side='left', fill='both', expand=1)
         scrollbar = tk.Scrollbar(newWindow, orient="vertical", command=listbox.yview)
         scrollbar.pack(side='right', fill='y')
+
     else:
         tk.messagebox.showwarning(title='Ошибка!', message='Введите корректное значение!')
 
