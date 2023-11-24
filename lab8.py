@@ -33,48 +33,72 @@ def shift_o_matic(iterable, r=None):
         else:
             return
 
+
 schedule = list(set(shift_o_matic(shift)))
 
 shift_separator = []
 new_shifts = []
+old_shifts = []
 
 for i in range(len(schedule)):
     shift_separator.append(str(schedule[i]).replace('(', '').replace(')', '').replace("'", "").replace(',', '').replace(' ', ''))
 for i in shift_separator:
-    if not 'MM' in i:
+    if 'MM' not in i:
         new_shifts.append(i)
+for i in range(len(schedule)):
+    old_shifts.append(str(schedule[i]).replace('(', '').replace(')', '').replace("'", "").replace(',', '').replace(' ', ''))
 
 
 shift_maker_window = tk.Tk()
 
-shift_maker_window.geometry('350x350')
+shift_maker_window.geometry('350x300')
 shift_maker_window.resizable(False, False)
 
 shift_maker_window.title('Сменодел')
-label_function_name = tk.Label(shift_maker_window, text='Все возможные смены', font='Arial 16')
-label_function_name.place(x=55, y=50)
 
+label_function_name1 = tk.Label(shift_maker_window, text='Введите 1 для выведения всех смен', font='Arial 12')
+label_function_name1.place(x=20, y=30)
 
-def inserter(controller):
-    if controller:
-        newWindow = tk.Toplevel(shift_maker_window)
-        newWindow.title('Все возможные смены')
-        newWindow.geometry('240x320')
-        solution_list = str(new_shifts)
-        languages_var = tk.StringVar(value=solution_list)
-        listbox = tk.Listbox(newWindow, listvariable=languages_var, font= 'Arial 12')
-        listbox.pack(side='left', fill='both', expand=1)
-        scrollbar = tk.Scrollbar(newWindow, orient="vertical", command=listbox.yview)
-        scrollbar.pack(side='right', fill='y')
+label_function_name2 = tk.Label(shift_maker_window, text='Введите 2 для выведения смен после указа', font='Arial 12')
+label_function_name2.place(x=20, y=60)
+
+text_box = ttk.Entry(shift_maker_window, font='Arial 12')
+text_box.place(x=21, y=90)
 
 
 def checker():
     return True
 
 
-shift_creator = tk.Button(shift_maker_window, text='Вывести смены', font='Arial 16', command=lambda:(checker(), inserter(checker)), bg='brown', fg='white', height=6)
-shift_creator.place(x=87, y=125)
+def inserter(controller):
+    if controller == '1' and checker() is True:
+        shift_maker_window.destroy()
+        newWindow = tk.Tk()
+        newWindow.title('Запрошенные смены')
+        newWindow.geometry('240x320')
+        solution_list = str(old_shifts)
+        languages_var = tk.StringVar(value=solution_list)
+        listbox = tk.Listbox(newWindow, listvariable=languages_var, font='Arial 12')
+        listbox.pack(side='left', fill='both', expand=1)
+        scrollbar = tk.Scrollbar(newWindow, orient="vertical", command=listbox.yview)
+        scrollbar.pack(side='right', fill='y')
+    elif controller == '2' and checker() is True:
+        shift_maker_window.destroy()
+        newWindow = tk.Tk()
+        newWindow.title('Запрошенные смены')
+        newWindow.geometry('240x320')
+        solution_list = str(new_shifts)
+        languages_var = tk.StringVar(value=solution_list)
+        listbox = tk.Listbox(newWindow, listvariable=languages_var, font='Arial 12')
+        listbox.pack(side='left', fill='both', expand=1)
+        scrollbar = tk.Scrollbar(newWindow, orient="vertical", command=listbox.yview)
+        scrollbar.pack(side='right', fill='y')
+    else:
+        tk.messagebox.showwarning(title='Ошибка!', message='Введите корректное значение!')
 
+
+shift_creator = tk.Button(shift_maker_window, text='Вывести смены', font='Arial 16', command=lambda:(checker(), inserter(text_box.get())), bg='brown', fg='white', height=6)
+shift_creator.place(x=87, y=125)
 
 shift_maker_window.mainloop()
 
